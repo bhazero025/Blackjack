@@ -16,10 +16,10 @@ public class ConsoleGame
 	{		
 		this.kb = new Scanner(System.in);
 		this.deck = new Deck();
-		playerArr = new Player[5];
+		this.playerArr = new Player[5];
 		for (int i = 0; i < playerArr.length; i++)
 		{
-			playerArr[i] = new Player("Player_" + i);
+			this.playerArr[i] = new Player("Player_" + i);
 		}
 		this.dealer = new Dealer();
 	
@@ -30,9 +30,40 @@ public class ConsoleGame
 			System.out.println("\n\n");
 		}
 		
+		delaerGetCard(dealer);
 		
-		//deck.printDeck();
+		for (int i = 0; i < playerArr.length; i++)
+		{
+			choice(playerArr[i]);
+			System.out.println("\n\n");
+		}
+		
+		delaerCheckDraw(dealer);
+		
+		// Now Delaer gets his card
 
+	}
+	
+	// TODO checkWinner
+	private void checkWinner(Player a, Dealer b)
+	{
+		
+	}
+	
+	private void delaerCheckDraw(Dealer a) 
+	{
+		if (a.getPoints() < Dealer.DRAW_AGAIN)
+		{
+			a.getCard(deck);
+		}
+	}
+
+	private void delaerGetCard(Dealer a)
+	{
+		a.getCard(deck);
+		System.out.println(a.getName() + " draws a card and it is " + a.getLastCard().getName());
+		a.getCard(deck);
+		System.out.println("Delaer secret is " + a.getLastCard().getName() + "\n\n");
 	}
 	
 	private void playerGetCard(Player a)
@@ -53,7 +84,7 @@ public class ConsoleGame
 	
 	private void choice(Player a)
 	{
-		System.out.println("Would you like to pick another card ? \n1 = Yes\n0 = No");
+		System.out.println(a.getName() + " Would you like to pick another card ? \n1 = Yes\n0 = No");
 		
 		int choice = kb.nextInt();
 		
