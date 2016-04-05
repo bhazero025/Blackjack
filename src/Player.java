@@ -56,7 +56,6 @@ public class Player
 		}
 	}
 	
-	
 	public int getAceCount()
 	{
 		return this.aceCount;

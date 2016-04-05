@@ -9,10 +9,10 @@ public class ConsoleGame
 	
 	public ConsoleGame()
 	{
-		start();
+		
 	}
 	
-	private void start()
+	public void start()
 	{		
 		this.kb = new Scanner(System.in);
 		this.deck = new Deck();
@@ -22,7 +22,7 @@ public class ConsoleGame
 			this.playerArr[i] = new Player("Player_" + i);
 		}
 		this.dealer = new Dealer();
-	
+
 		
 		for (int i = 0; i < playerArr.length; i++)
 		{
@@ -38,16 +38,34 @@ public class ConsoleGame
 			System.out.println("\n\n");
 		}
 		
+		// Now Dealer gets his card
 		delaerCheckDraw(dealer);
 		
-		// Now Delaer gets his card
 
+		for (int i = 0; i < playerArr.length; i++)
+		{
+			checkWinner(playerArr[i], dealer);
+		}
 	}
 	
 	// TODO checkWinner
 	private void checkWinner(Player a, Dealer b)
 	{
-		
+		System.out.println(a.getName() + " has " + a.getPoints() + " points");
+		System.out.println(b.getName() + " has " + b.getPoints() + " points");
+		if (!a.isAlive() && !b.isAlive()) // dealer wins
+		{
+			System.out.println(b.getName() + " wins.");
+		}
+		else if (a.isAlive() && b.isAlive() && (a.getPoints() > b.getPoints())) // player wins
+		{
+			System.out.println(a.getName() + " wins");
+		}
+		else if (a.isAlive() && b.isAlive() && (a.getPoints() < b.getPoints())) // dealer wins
+		{
+			System.out.println(b.getName() + " wins.");
+		}
+		System.out.println("\nEnd\n");
 	}
 	
 	private void delaerCheckDraw(Dealer a) 

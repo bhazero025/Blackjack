@@ -6,5 +6,6 @@ public class Main
 	{
 		//CGI
 		ConsoleGame game = new ConsoleGame();
+		game.start();
 	}
 }

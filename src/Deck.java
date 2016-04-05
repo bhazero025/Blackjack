@@ -15,6 +15,11 @@ public class Deck
 		DECK = createDeckCheat(debug);
 	}
 	
+	public int getDeckSize()
+	{
+		return this.DECK.size();
+	}
+	
 	public Card getNextCard()
 	{
 		// TODO Check if we are on the last card.
