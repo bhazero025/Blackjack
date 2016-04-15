@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 public class ConsoleGame 
 {	
@@ -29,6 +30,7 @@ public class ConsoleGame
 		for (int i = 0; i < playerArr.length; i++)
 		{
 			playerGetCard(playerArr[i]);
+                        _sleep();
 			System.out.println("\n\n");
 		}
 		
@@ -39,6 +41,7 @@ public class ConsoleGame
                 for (int i = 0; i < playerArr.length; i++)
 		{
 			playerGetCard(playerArr[i]);
+                        _sleep();
 			System.out.println("\n\n");
 		}
 		
@@ -48,7 +51,7 @@ public class ConsoleGame
                 // Check for blackjack
                 for (int i = 0; i < playerArr.length; i++)
                 {
-                    playerArr[3].allowCheat();
+                    //playerArr[3].allowCheat();
                     checkBlackJack(playerArr[i], dealer);
                 }
                 
@@ -106,6 +109,7 @@ public class ConsoleGame
 	// TODO checkWinner
 	private void checkWinner(Player[] a, Dealer b)
 	{
+            
             for (int i = 0; i < a.length; i++)
             {
                 
@@ -133,7 +137,7 @@ public class ConsoleGame
                     // if delaer bust
                     if (b.getPoints() > Player.MAX_POINTS)
                     {
-                        if (a[i].getPoints() < Player.MAX_POINTS)
+                        if ((a[i].getPoints() < Player.MAX_POINTS) && a[i].isAlive())
                         {
                             System.out.println(a[i].getName() + " won with " + a[i].getPoints() + " points.");
                         }
@@ -237,4 +241,26 @@ public class ConsoleGame
 			}
 		}
 	}
+        
+        private void _sleep()
+        {
+            this._sleep(2);
+        }
+        
+        private void _sleep(int seconds)
+        {
+            try
+            {
+                TimeUnit.SECONDS.sleep(seconds);
+            }
+            catch (InterruptedException e)
+            {
+                System.out.println("Could not sleep.");
+            }
+            catch (Exception e)
+            {
+                System.out.println("Something bad happened.");
+            }
+                
+        }
 }

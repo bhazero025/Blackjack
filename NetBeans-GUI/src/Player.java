@@ -30,6 +30,11 @@ public class Player
             this.id = id;
         }
         
+        public void setPoints(int points)
+        {
+            this.points = points;
+        }
+        
         public void allowCheat()
         {
             this.cheat = true;
