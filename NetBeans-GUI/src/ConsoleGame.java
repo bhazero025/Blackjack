@@ -65,11 +65,8 @@ public class ConsoleGame
 		// Now Dealer gets his card
 		dealerCheckDraw(dealer);
 		
-
-		for (int i = 0; i < playerArr.length; i++)
-		{
-			checkWinner(playerArr[i], dealer);
-		}
+                dealer.seeCard();
+		checkWinner(playerArr, dealer);
 	}
 	
         private void checkBlackJack(Player a, Dealer b)
@@ -77,19 +74,19 @@ public class ConsoleGame
             // if player has blackjack and dealer does not
             if (a.hasBlackJack() && (!b.hasBlackJack()))
             {
-                System.out.println(a.getName() + " has won the game with blackjack.");
+                System.out.println(a.getName() + " has won the game with blackjack.\n\n");
                 removePlayer(a);
             }
             // if there is a tie
             else if (a.hasBlackJack() && b.hasBlackJack())
             {
-                System.out.println(a.getName() + " ties the game.");
+                System.out.println(a.getName() + " ties the game.\n\n");
                 removePlayer(a);
             }
             // if the delaer wins 
             else if ((!a.hasBlackJack()) && b.hasBlackJack())
             {
-                System.out.println(a.getName() + " lost the game.");
+                System.out.println(a.getName() + " lost the game.\n\n");
                 removePlayer(a);
             }
         }
@@ -107,26 +104,48 @@ public class ConsoleGame
         }
         
 	// TODO checkWinner
-	private void checkWinner(Player a, Dealer b)
+	private void checkWinner(Player[] a, Dealer b)
 	{
-                if (a.isAlive())
+            for (int i = 0; i < a.length; i++)
+            {
+                
+                if (a[i].isAlive() && b.getPoints() < Player.MAX_POINTS)
                 {
-                    System.out.println(a.getName() + " has " + a.getPoints() + " points");
-                    System.out.println(b.getName() + " has " + b.getPoints() + " points");
-                    
-                    if (a.getPoints() > b.getPoints())
+                    if (a[i].getPoints() > Player.MAX_POINTS)
                     {
-                        System.out.println(a.getName() + " won.");
+                        System.out.println(a[i].getName() + " lost with " + a[i].getPoints() + " points.");
                     }
-                    else if (a.getPoints() < b.getPoints())
+                    else if (a[i].getPoints() > b.getPoints())
                     {
-                        System.out.println(a.getName() + " lost.");
+                        System.out.println(a[i].getName() + " won with " + a[i].getPoints() + " points.");
+                    }
+                    else if (a[i].getPoints() < b.getPoints())
+                    {
+                        System.out.println(a[i].getName() + " lost with " + a[i].getPoints() + " points.");
                     }
                     else
                     {
-                        System.out.println(a.getName() + " tied.");
+                        System.out.println(a[i].getName() + " tied with " + a[i].getPoints() + " points.");
                     }
                 }
+                else
+                {
+                    // if delaer bust
+                    if (b.getPoints() > Player.MAX_POINTS)
+                    {
+                        if (a[i].getPoints() < Player.MAX_POINTS)
+                        {
+                            System.out.println(a[i].getName() + " won with " + a[i].getPoints() + " points.");
+                        }
+                    }
+                }
+            } 
+            
+            System.out.println("Would you like to play again ? \n1 = Yes\n0 = No");
+            if (kb.nextInt() == 1)
+            {
+                this.start();
+            }
 	}
 	
 	private void dealerCheckDraw(Dealer a) 
@@ -168,6 +187,11 @@ public class ConsoleGame
 	
 	private void choice(Player a)
 	{
+                if (a.getPoints() > 21)
+                {
+                    return;
+                }
+                a.seeCard();
 		System.out.println(a.getName() + " Would you like to pick another card ? \n1 = Yes\n0 = No");
 		
 		int choice = kb.nextInt();
@@ -197,7 +221,9 @@ public class ConsoleGame
 		{
 			if (a.getAceCount() != 0)
 			{
+                                a.seeCard();
 				System.out.println(a.getName() + " got an Ace, would you like to change the value from 11 to 1? \n1 = Yes\n0 = No");
+                                
 				int choice = kb.nextInt();
 				
 				if (choice == 1)

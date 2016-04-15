@@ -5,7 +5,7 @@ public class Player
 	private String name;
 	private ArrayList<Card> cardsInHand;
 	private int points;
-	private final int MAX_POINTS = 21;
+	public static final int MAX_POINTS = 21;
 	private boolean isAlive;
 	private int aceCount;
 	private int id;
@@ -134,7 +134,7 @@ public class Player
         
         public boolean hasBlackJack()
         {
-            return !cheat ? this.points == MAX_POINTS : true;
+            return !cheat ? this.points == Player.MAX_POINTS : true;
         }
 	
 }
