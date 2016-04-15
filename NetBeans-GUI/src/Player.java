@@ -8,7 +8,8 @@ public class Player
 	private final int MAX_POINTS = 21;
 	private boolean isAlive;
 	private int aceCount;
-	
+	private int id;
+        
 	public static enum Action {STAND, HIT, NOTHING};
 	
 	public Player(String name)
@@ -18,8 +19,21 @@ public class Player
 		this.points = 0;
 		this.isAlive = true;
 		this.aceCount = 0;
+                this.id = -1;
 	}
+        
+        public Player(String name, int id)
+        {
+            this(name);
+            
+            this.id = id;
+        }
 	
+        public int getId()
+        {
+            return this.id;
+        }
+        
 	public String getName()
 	{
 		return this.name;
@@ -39,10 +53,6 @@ public class Player
 		
 		points += next.getValue();
 		
-		if (points > MAX_POINTS)
-		{
-			this.isAlive = false;
-		}
 	}
 	
 	public void changeCardValue()
@@ -76,6 +86,11 @@ public class Player
 	{
 		return this.isAlive;
 	}
+        
+        public void setAlive(boolean a)
+        {
+                this.isAlive = a;
+        }
 	
 	public Card getLastCard()
 	{
@@ -110,5 +125,10 @@ public class Player
 	{
 		this.aceCount--;
 	}
+        
+        public boolean hasBlackJack()
+        {
+            return this.points == MAX_POINTS;
+        }
 	
 }

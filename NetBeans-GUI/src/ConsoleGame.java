@@ -6,7 +6,8 @@ public class ConsoleGame
 	private Deck deck;
 	private Player[] playerArr;
 	private Dealer dealer;
-	
+	private int NUMBER_OF_PLAYERS;
+        
 	public ConsoleGame()
 	{
 		
@@ -17,30 +18,47 @@ public class ConsoleGame
 		this.kb = new Scanner(System.in);
 		this.deck = new Deck(4, false);
 		this.playerArr = new Player[5];
+                this.NUMBER_OF_PLAYERS = 5;
 		for (int i = 0; i < playerArr.length; i++)
 		{
-			this.playerArr[i] = new Player("Player_" + i);
+			this.playerArr[i] = new Player("Player_" + i, i);
 		}
 		this.dealer = new Dealer();
 
                 System.out.println(this.deck.getDeckSize());
 		
+                // Player draws first card
 		for (int i = 0; i < playerArr.length; i++)
 		{
 			playerGetCard(playerArr[i]);
 			System.out.println("\n\n");
 		}
 		
-		delaerGetCard(dealer);
+                // Dealer draws first card
+		dealerGetCard(dealer);
 		
+                // Player draws second card
+                for (int i = 0; i < playerArr.length; i++)
+		{
+			playerGetCard(playerArr[i]);
+			System.out.println("\n\n");
+		}
+		
+                // Dealer draws second card
+		dealerGetCard(dealer);
+                
+                // Player choice to draw or not
 		for (int i = 0; i < playerArr.length; i++)
 		{
-			choice(playerArr[i]);
+                        if (playerArr[i].isAlive())
+                        {
+                            	choice(playerArr[i]);
+                        }
 			System.out.println("\n\n");
 		}
 		
 		// Now Dealer gets his card
-		delaerCheckDraw(dealer);
+		dealerCheckDraw(dealer);
 		
 
 		for (int i = 0; i < playerArr.length; i++)
@@ -49,27 +67,64 @@ public class ConsoleGame
 		}
 	}
 	
+        private void checkBlackJack(Player a, Dealer b)
+        {
+            // if player has blackjack and dealer does not
+            if (a.hasBlackJack() && (!b.hasBlackJack()))
+            {
+                System.out.println(a.getName() + " has won the game with blackjack.");
+                removePlayer(a);
+            }
+            // if there is a tie
+            else if (a.hasBlackJack() && b.hasBlackJack())
+            {
+                System.out.println(a.getName() + " ties the game.");
+                removePlayer(a);
+            }
+            // if the delaer wins 
+            else if ((!a.hasBlackJack()) && b.hasBlackJack())
+            {
+                System.out.println(a.getName() + " lost the game.");
+                removePlayer(a);
+            }
+        }
+        
+        private void removePlayer(Player a)
+        {
+            for (int i = 0; i < this.playerArr.length; i++)
+            {
+                if (playerArr[i].getId() == a.getId())
+                {
+                    a.setAlive(false);
+                    this.NUMBER_OF_PLAYERS--;
+                }
+            }
+        }
+        
 	// TODO checkWinner
 	private void checkWinner(Player a, Dealer b)
 	{
-		System.out.println(a.getName() + " has " + a.getPoints() + " points");
-		System.out.println(b.getName() + " has " + b.getPoints() + " points");
-		if (!a.isAlive() && !b.isAlive()) // dealer wins
-		{
-			System.out.println(b.getName() + " wins.");
-		}
-		else if (a.isAlive() && b.isAlive() && (a.getPoints() > b.getPoints())) // player wins
-		{
-			System.out.println(a.getName() + " wins");
-		}
-		else if (a.isAlive() && b.isAlive() && (a.getPoints() < b.getPoints())) // dealer wins
-		{
-			System.out.println(b.getName() + " wins.");
-		}
-		System.out.println("\nEnd\n");
+                if (a.isAlive())
+                {
+                    System.out.println(a.getName() + " has " + a.getPoints() + " points");
+                    System.out.println(b.getName() + " has " + b.getPoints() + " points");
+                    
+                    if (a.getPoints() > b.getPoints())
+                    {
+                        System.out.println(a.getName() + " won.");
+                    }
+                    else if (a.getPoints() < b.getPoints())
+                    {
+                        System.out.println(a.getName() + " lost.");
+                    }
+                    else
+                    {
+                        System.out.println(a.getName() + " tied.");
+                    }
+                }
 	}
 	
-	private void delaerCheckDraw(Dealer a) 
+	private void dealerCheckDraw(Dealer a) 
 	{
 		if (a.getPoints() < Dealer.DRAW_AGAIN)
 		{
@@ -77,12 +132,18 @@ public class ConsoleGame
 		}
 	}
 
-	private void delaerGetCard(Dealer a)
+	private void dealerGetCard(Dealer a)
 	{
 		a.getCard(deck);
-		System.out.println(a.getName() + " draws a card and it is " + a.getLastCard().getName());
-		a.getCard(deck);
-		System.out.println("Delaer secret is " + a.getLastCard().getName() + "\n\n");
+                if (a.getNumberOfCards() != 1)
+                {
+                    System.out.println(a.getName() + " draws a card and it is " + a.getLastCard().getName());
+                }
+                else
+                {
+                    // Just to debug
+                    System.out.println("Delaer secret is " + a.getLastCard().getName() + "\n\n"); 
+                }
 	}
 	
 	private void playerGetCard(Player a)
@@ -92,9 +153,9 @@ public class ConsoleGame
 		System.out.println(a.getName() + " draws a card and it is " + a.getLastCard().getName());
 		checkAce(a);
 	
-		a.getCard(deck);
+		/*a.getCard(deck);
 		System.out.println(a.getName() + " also draws " + a.getLastCard().getName());
-		checkAce(a);
+		checkAce(a);*/
 
 		a.seeCard();
 		//choice(a);
