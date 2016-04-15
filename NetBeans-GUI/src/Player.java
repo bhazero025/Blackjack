@@ -9,6 +9,7 @@ public class Player
 	private boolean isAlive;
 	private int aceCount;
 	private int id;
+        private boolean cheat = false;
         
 	public static enum Action {STAND, HIT, NOTHING};
 	
@@ -27,6 +28,11 @@ public class Player
             this(name);
             
             this.id = id;
+        }
+        
+        public void allowCheat()
+        {
+            this.cheat = true;
         }
 	
         public int getId()
@@ -128,7 +134,7 @@ public class Player
         
         public boolean hasBlackJack()
         {
-            return this.points == MAX_POINTS;
+            return !cheat ? this.points == MAX_POINTS : true;
         }
 	
 }

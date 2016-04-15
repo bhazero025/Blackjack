@@ -25,8 +25,6 @@ public class ConsoleGame
 		}
 		this.dealer = new Dealer();
 
-                System.out.println(this.deck.getDeckSize());
-		
                 // Player draws first card
 		for (int i = 0; i < playerArr.length; i++)
 		{
@@ -46,6 +44,13 @@ public class ConsoleGame
 		
                 // Dealer draws second card
 		dealerGetCard(dealer);
+                
+                // Check for blackjack
+                for (int i = 0; i < playerArr.length; i++)
+                {
+                    playerArr[3].allowCheat();
+                    checkBlackJack(playerArr[i], dealer);
+                }
                 
                 // Player choice to draw or not
 		for (int i = 0; i < playerArr.length; i++)
