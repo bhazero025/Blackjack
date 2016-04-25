@@ -30,6 +30,11 @@ public class Player
             this.id = id;
         }
         
+        public void changeName(String name)
+        {
+            this.name = name;
+        }
+        
         public void setPoints(int points)
         {
             this.points = points;

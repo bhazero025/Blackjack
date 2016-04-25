@@ -20,10 +20,14 @@ public class ConsoleGame
 		this.deck = new Deck(4, false);
 		this.playerArr = new Player[5];
                 this.NUMBER_OF_PLAYERS = 5;
+                
+                
 		for (int i = 0; i < playerArr.length; i++)
-		{
-			this.playerArr[i] = new Player("Player_" + i, i);
+		{   
+                    System.out.println("Please enter the name for player " + i);
+                    this.playerArr[i] = new Player(kb.nextLine(), i);
 		}
+                
 		this.dealer = new Dealer();
 
                 // Player draws first card
